@@ -2,178 +2,198 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Para Pecas</title>
 
 <style>
 body{
   margin:0;
   height:100vh;
+  overflow:hidden;
   display:flex;
   flex-direction:column;
-  justify-content:flex-end;
+  justify-content:center;
   align-items:center;
   background:linear-gradient(to top,#ffe8f1,#fff8fb);
-  overflow:hidden;
   font-family:'Segoe UI', sans-serif;
+}
+
+/* --- MENSAJE ARRIBA --- */
+.message{
+  font-size:clamp(26px,6vw,42px);
+  font-weight:300;
+  color:#b30059;
+  opacity:0;
+  animation:fadeIn 3s ease forwards;
+  letter-spacing:2px;
+  margin-bottom:20px;
+  text-align:center;
+}
+
+@keyframes fadeIn{
+  to{opacity:1;}
 }
 
 /* --- RAMO --- */
 .bouquet{
   position:relative;
-  width:500px;
-  height:420px;
-  margin-bottom:90px;
+  width:90vw;
+  max-width:500px;
+  height:55vh;
 }
 
-/* tallos */
 .stem{
   position:absolute;
   width:3px;
-  height:230px;
+  height:35%;
   background:linear-gradient(#2e7d32,#66bb6a);
   bottom:0;
   left:50%;
   transform-origin:bottom;
 }
 
-/* flor */
 .flower{
   position:absolute;
-  width:90px;
-  height:90px;
+  width:60px;
+  height:60px;
+  cursor:pointer;
+  transition:transform 0.3s ease;
+}
+
+.flower:hover{
+  transform:scale(1.1);
 }
 
 .petal{
   position:absolute;
-  width:45px;
-  height:70px;
+  width:30px;
+  height:45px;
   background:radial-gradient(circle at top,#ffc1e3,#e91e63);
   border-radius:50% 50% 40% 40%;
   transform-origin:bottom center;
 }
 
-.petal:nth-child(1){ transform:rotate(0deg) translateY(-15px); }
-.petal:nth-child(2){ transform:rotate(60deg) translateY(-15px); }
-.petal:nth-child(3){ transform:rotate(120deg) translateY(-15px); }
-.petal:nth-child(4){ transform:rotate(180deg) translateY(-15px); }
-.petal:nth-child(5){ transform:rotate(240deg) translateY(-15px); }
-.petal:nth-child(6){ transform:rotate(300deg) translateY(-15px); }
+.petal:nth-child(1){ transform:rotate(0deg) translateY(-10px); }
+.petal:nth-child(2){ transform:rotate(60deg) translateY(-10px); }
+.petal:nth-child(3){ transform:rotate(120deg) translateY(-10px); }
+.petal:nth-child(4){ transform:rotate(180deg) translateY(-10px); }
+.petal:nth-child(5){ transform:rotate(240deg) translateY(-10px); }
+.petal:nth-child(6){ transform:rotate(300deg) translateY(-10px); }
 
 .center{
   position:absolute;
-  width:22px;
-  height:22px;
+  width:14px;
+  height:14px;
   background:#ffeb3b;
   border-radius:50%;
-  top:34px;
-  left:34px;
-  box-shadow:0 0 10px rgba(255,235,59,0.7);
+  top:23px;
+  left:23px;
 }
 
-/* diferentes tonos */
-.tone2 .petal{
-  background:radial-gradient(circle at top,#ffd6ec,#ff4fa3);
-}
-.tone3 .petal{
-  background:radial-gradient(circle at top,#ff9ecb,#d81b60);
-}
-
-/* mensaje */
-.message{
+/* --- CORAZONES --- */
+.heart{
   position:absolute;
-  bottom:30px;
-  font-size:34px;
-  font-weight:300;
-  color:#b30059;
-  opacity:0;
-  animation:fadeIn 3s ease forwards;
-  animation-delay:1.5s;
-  letter-spacing:2px;
+  width:14px;
+  height:14px;
+  background:#ff1744;
+  transform:rotate(45deg);
+  animation:floatUp 5s linear forwards;
 }
 
-@keyframes fadeIn{
-  to{opacity:1;}
+.heart::before,
+.heart::after{
+  content:"";
+  position:absolute;
+  width:14px;
+  height:14px;
+  background:#ff1744;
+  border-radius:50%;
+}
+
+.heart::before{ top:-7px; left:0; }
+.heart::after{ left:-7px; top:0; }
+
+@keyframes floatUp{
+  from{
+    transform:translateY(0) rotate(45deg);
+    opacity:1;
+  }
+  to{
+    transform:translateY(-600px) rotate(45deg);
+    opacity:0;
+  }
+}
+
+/* --- FLORES QUE APARECEN --- */
+.extraFlower{
+  position:absolute;
+  font-size:24px;
+  animation:floatUp 5s linear forwards;
 }
 </style>
 </head>
 <body>
 
-<div class="bouquet">
+<div class="message">Te amo Pecas ❤️ Feliz Cumple Mes❤️ Eres el amor de mi vida❤️</div>
 
-  <!-- 10 flores -->
-  <!-- cada una con ligera variación de ángulo -->
-  
-  <!-- Generadas manualmente -->
-  
-  <div class="stem" style="transform:translateX(-80px) rotate(-12deg);"></div>
-  <div class="flower" style="bottom:210px; left:140px;">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
+<div class="bouquet" id="bouquet"></div>
+
+<script>
+const bouquet = document.getElementById("bouquet");
+
+/* Crear 10 flores */
+for(let i=0;i<10;i++){
+  const flower = document.createElement("div");
+  flower.className="flower";
+  flower.style.left = (20 + i*6) + "%";
+  flower.style.bottom = (20 + Math.random()*15) + "%";
+
+  flower.innerHTML = `
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
+    <div class="petal"></div>
     <div class="center"></div>
-  </div>
+  `;
 
-  <div class="stem" style="transform:translateX(-40px) rotate(-6deg);"></div>
-  <div class="flower tone2" style="bottom:230px; left:190px;">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
+  flower.addEventListener("click", (e)=>{
+    for(let j=0;j<8;j++){
+      createHeart(e.clientX, e.clientY);
+    }
+    for(let j=0;j<4;j++){
+      createExtraFlower(e.clientX, e.clientY);
+    }
+  });
 
-  <div class="stem" style="transform:translateX(0px) rotate(0deg);"></div>
-  <div class="flower tone3" style="bottom:250px; left:230px;">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
+  bouquet.appendChild(flower);
+}
 
-  <div class="stem" style="transform:translateX(40px) rotate(6deg);"></div>
-  <div class="flower" style="bottom:230px; left:280px;">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
+/* corazones automáticos suaves */
+setInterval(()=>{
+  createHeart(Math.random()*window.innerWidth, window.innerHeight);
+},800);
 
-  <div class="stem" style="transform:translateX(80px) rotate(12deg);"></div>
-  <div class="flower tone2" style="bottom:210px; left:330px;">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
+function createHeart(x,y){
+  const heart = document.createElement("div");
+  heart.className="heart";
+  heart.style.left = x+"px";
+  heart.style.top = y+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),5000);
+}
 
-  <!-- flores laterales adicionales -->
-  <div class="flower tone3" style="bottom:180px; left:110px; transform:scale(0.8);">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
-
-  <div class="flower tone2" style="bottom:170px; left:360px; transform:scale(0.8);">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
-
-  <div class="flower" style="bottom:150px; left:170px; transform:scale(0.75);">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
-
-  <div class="flower tone3" style="bottom:150px; left:300px; transform:scale(0.75);">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
-
-  <div class="flower tone2" style="bottom:130px; left:240px; transform:scale(0.7);">
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="petal"></div><div class="petal"></div><div class="petal"></div>
-    <div class="center"></div>
-  </div>
-
-</div>
-
-<div class="message">Te amo Pecas ❤️ Feliz Cumple Mes❤️</div>
+function createExtraFlower(x,y){
+  const f = document.createElement("div");
+  f.className="extraFlower";
+  f.innerHTML="🌸";
+  f.style.left = x+"px";
+  f.style.top = y+"px";
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),5000);
+}
+</script>
 
 </body>
 </html>
